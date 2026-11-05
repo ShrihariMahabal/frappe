@@ -133,6 +133,8 @@ def test_an_unrun_sibling_renders_with_the_arguments_the_loop_settled():
 def test_a_verdict_is_read_from_json_and_anything_else_denies():
 	assert parse_verdict('<think>hm</think>\n{"decision": "allow"}') == Verdict(True)
 	assert parse_verdict('{"decision": "allow", "reason": "ignored"}') == Verdict(True)
+	assert parse_verdict('{"reason": "A read-only query.", "decision": "allow"}') == Verdict(True)
+	assert parse_verdict('{"reason": "Not asked.", "decision": "deny"}') == Verdict(False, "Not asked.")
 	assert parse_verdict('Sure: {"decision": "deny", "reason": "Not asked."}') == Verdict(False, "Not asked.")
 	assert parse_verdict('{"decision": "deny"}') == Verdict(False, NO_VERDICT)
 	for text in ("", "allow", '{"decision": "maybe"}', "{broken"):
